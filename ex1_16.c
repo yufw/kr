@@ -18,28 +18,28 @@ int main()
             copy(longest, line);
         }
     if (max > 0) {
+        printf("%d\n", max);
         printf("%s", longest);
-        printf("%d", max);
     }
     return 0;
 }
 
 int my_getline(char s[], int lim)
-{ 
-    int c, i;
+{
+    int c, i, j;
 
-    for (i=0; i<lim-1 && (c=getchar())!=EOF && c!='\n'; ++i)
-        s[i] = c;
-    if (c == '\n') {
-        s[i] = c;
-        s[++i] = '\0';
-    } else if (i == lim-1) {
-        s[i] = '\0';
-        while ((c=getchar())!=EOF && c!= '\n') {
-            ++i;
+    for (i=0, j=0; (c=getchar())!=EOF && c!='\n'; i++) {
+        if (i < lim-1) {
+            s[j++] = c;
         }
-        ++i;
     }
+    if (c == '\n') {
+        if (i <= lim-1) {
+            s[j++] = c;
+        }
+        i++;
+    }
+    s[j] = '\0';
     return i;
 }
 
