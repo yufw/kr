@@ -4,34 +4,31 @@
 int getch(void);
 void ungetch(int);
 
-int getint(int *pn)
+int getfloat(double *pn)
 {
-    int c, d, sign;
+    int c, sign, power;
 
     while (isspace(c = getch()))
         ;
     if (!isdigit(c) && c != EOF && c != '+' && c != '-') {
         ungetch(c);
-        return 0;
+        return c;
     }
     sign = (c == '-') ? -1 : 1;
-    if (c == '+' || c == '-') {
-        d = c;
-        if (!isdigit(c = getch())) {
-            if (c != EOF)
-                ungetch(c);
-            ungetch(d);
-            return d;
-        }
-    }
-    if (c == '+' || c  == '-')
+    if (c == '+' || c == '-')
         c = getch();
-    for (*pn = 0; isdigit(c); c = getch())
+    for (*pn = 0.0; isdigit(c); c = getch())
         *pn = 10 * *pn + (c - '0');
-    *pn *= sign;
+    if (c == '.')
+        c = getch();
+    for (power = 1; isdigit(c); c = getch()) {
+        *pn = 10 * *pn + (c - '0');
+        power *= 10;
+    }
+    *pn = *pn / power * sign;
     if (c != EOF)
         ungetch(c);
-    return c;
+    return c;    
 }
 
 #define BUFSIZE	100
@@ -54,9 +51,8 @@ void ungetch(int c)
 
 int main()
 {
-    int a, b;
-    b = getint(&a);
-    printf("%d\n", a);
-    printf("%d\n", b);
+    double a;
+    getfloat(&a);
+    printf("%g\n", a);
     return 0;
 }
