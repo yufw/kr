@@ -133,7 +133,7 @@ int main()
     printf("%d\n", atoi("-123"));
     printf("%d\n", atoi("  -12"));
 
-    char *t = "hello, world";
+    char t[] = "hello, world";
     reverse(t);
     printf("%s\n", t);
 
